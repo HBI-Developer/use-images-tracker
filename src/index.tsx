@@ -4,7 +4,9 @@ export default function useImagesTracker() {
   const tracker = useRef<any>(null),
     isStarted = useRef(false),
     images = useRef<Array<HTMLImageElement>>([]),
-    [failures, setFailures] = useState<Array<HTMLImageElement>>([]),
+    [failures, setFailures] = useState<
+      Array<{ code: number; image: HTMLImageElement }>
+    >([]),
     [counter, setCounter] = useState(0),
     [isLoaded, setIsLoaded] = useState(false);
 
@@ -21,9 +23,20 @@ export default function useImagesTracker() {
       if (image.complete) increaseCounter();
       else {
         image.addEventListener("load", increaseCounter);
-        image.addEventListener("error", () => {
+        image.addEventListener("error", async () => {
+          const error = { image, code: 0 };
           increaseCounter();
-          setFailures((prev) => [...prev, image]);
+          try {
+            const url = await fetch(image.src);
+
+            if (!url.ok) {
+              error.code = url.status;
+            }
+          } catch (_) {
+            error.code = 500;
+          }
+
+          setFailures((prev) => [...prev, error]);
         });
       }
     });

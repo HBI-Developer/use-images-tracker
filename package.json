@@ -1,0 +1,43 @@
+{
+  "name": "use-images-tracker",
+  "version": "1.0.0",
+  "description": "React Hook to Check if images inside tracked element/component is loaded.",
+  "homepage": "https://github.com/HBI-Developer/use-images-tracker",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "track",
+    "images",
+    "loaded",
+    "track images",
+    "images loaded",
+    "is loaded",
+    "is images loaded"
+  ],
+  "author": "HBI Developer",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HBI-Developer/use-images-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HBI-Developer/use-images-tracker/issues"
+  }
+}

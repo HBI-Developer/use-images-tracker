@@ -1,21 +1,26 @@
-# use-images-tracker
+<h1 align="center">use-images-tracker</h1>
 
-### A lightweight React Hook to track image load state inside any container
+<h3 align="center">A lightweight React Hook to track image load state inside any container</h3>
 
 Know exactly when every `<img>` inside a tracked element has finished loading — or failed — without wiring manual `onLoad` / `onError` handlers on each image.
 
 Built for developers who need reliable image-load orchestration in galleries, product grids, lazy layouts, and dynamic content without reinventing DOM event plumbing.
 
-[![npm version](https://img.shields.io/npm/v/use-images-tracker?style=for-the-badge&logo=npm&logoColor=fff)](https://www.npmjs.com/package/use-images-tracker)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![React](https://img.shields.io/badge/React-%3E%3D16.8-61DAFB?style=for-the-badge&logo=react&logoColor=fff)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript&logoColor=fff)](https://www.typescriptlang.org/)
-[![Package](https://img.shields.io/badge/Package-NPM-red?style=for-the-badge)](https://www.npmjs.com/package/use-images-tracker)
+<p align="center">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" /></a>
+  <a href="https://www.npmjs.com/package/use-images-tracker"><img src="https://img.shields.io/npm/v/use-images-tracker?style=for-the-badge&logo=npm&logoColor=fff" alt="npm version" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-%3E%3D16.8-61DAFB?style=for-the-badge&logo=react&logoColor=fff" alt="React" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript&logoColor=fff" alt="TypeScript" /></a>
+  <a href="https://www.npmjs.com/package/use-images-tracker"><img src="https://img.shields.io/badge/Package-NPM-red?style=for-the-badge" alt="Package" /></a>
+</p>
 
-![React](https://img.shields.io/badge/Library-React-61DAFB?style=flat-square&logo=react)
-![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat-square&logo=typescript)
-![DOM](https://img.shields.io/badge/API-DOM%20Events-orange?style=flat-square)
-![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blue?style=flat-square)
+<p align="center">
+  <img src="https://img.shields.io/badge/Library-React-61DAFB?style=flat-square&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat-square&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/API-DOM%20Events-orange?style=flat-square" alt="DOM" />
+  <img src="https://img.shields.io/badge/Dependencies-Zero-blue?style=flat-square" alt="Zero Dependencies" />
+</p>
+
 
 [Install](#installation) · [Quick Start](#quick-start) · [API Reference](#api-reference) · [Report Bug](https://github.com/HBI-Developer/use-images-tracker/issues)
 
@@ -165,7 +170,7 @@ The hook returns an object with four members:
 
 | Member       | Type                                                                 | Description |
 | ------------ | -------------------------------------------------------------------- | ----------- |
-| `tracker`    | `React.MutableRefObject<any>`                                        | Ref to attach to the container element that wraps your images. |
+| `tracker`    | `React.RefObject<HTMLElement \| null>`                                | Ref to attach to the container element that wraps your images. |
 | `isLoaded`   | `boolean`                                                            | `true` when every tracked image has finished (loaded or errored). `true` immediately if no images are found. |
 | `failures`   | `Array<{ code: number; image: HTMLImageElement; url: string }>`      | Accumulated failure records for images that errored during tracking. |
 | `repeating`  | `() => void`                                                         | Resets tracking state and re-scans the container. Clears `failures`, counter, and `isLoaded`. No-op on first render or before tracking starts. Use when images change dynamically. |

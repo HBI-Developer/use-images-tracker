@@ -1,19 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function useImagesTracker() {
-  const tracker = useRef<any>(null),
+  const tracker = useRef<HTMLElement>(null),
     [isStarted, setIsStarted] = useState(false),
     isFirstTime = useRef(true),
-    images = useRef<Array<HTMLImageElement>>([]),
+    images = useRef<HTMLImageElement[]>([]),
     [failures, setFailures] = useState<
       Array<{ code: number; image: HTMLImageElement; url: string }>
     >([]),
     [counter, setCounter] = useState(0),
     [isLoaded, setIsLoaded] = useState(false),
+    imageListeners = useRef<Map<HTMLImageElement, { load: () => void; error: () => void }>>(new Map()),
+    removeListeners = () => {
+      imageListeners.current.forEach(({ load, error }, img) => {
+        img.removeEventListener("load", load);
+        img.removeEventListener("error", error);
+      });
+      imageListeners.current.clear();
+    },
     tracking = () => {
       if (isStarted) return;
+      removeListeners();
       setIsStarted(true);
-      images.current = tracker.current?.querySelectorAll("img") || [];
+      images.current = Array.from(tracker.current?.querySelectorAll("img") ?? []);
 
       if (images.current.length === 0) {
         setIsLoaded(true);
@@ -24,11 +33,10 @@ export default function useImagesTracker() {
         setCounter((prev: number) => prev + 1);
       };
 
-      [].forEach.call(images.current, (image: HTMLImageElement) => {
+      images.current.forEach((image: HTMLImageElement) => {
         if (image.complete) increaseCounter();
         else {
-          image.addEventListener("load", increaseCounter);
-          image.addEventListener("error", async () => {
+          const onError = async () => {
             const error = { image, code: 0, url: image.src };
             increaseCounter();
             try {
@@ -41,13 +49,17 @@ export default function useImagesTracker() {
               error.code = 500;
             }
 
-            setFailures((prev: Array<{ code: number; image: HTMLImageElement; url: string }>) => [...prev, error]);
-          });
+            setFailures((prev) => [...prev, error]);
+          };
+          image.addEventListener("load", increaseCounter);
+          image.addEventListener("error", onError);
+          imageListeners.current.set(image, { load: increaseCounter, error: onError });
         }
       });
     },
     repeating = () => {
       if (!isStarted || isFirstTime.current) return;
+      removeListeners();
       setCounter(0);
       setIsLoaded(false);
       setFailures([]);
@@ -58,6 +70,7 @@ export default function useImagesTracker() {
 
   useEffect(() => {
     tracking();
+    return () => removeListeners();
   }, []);
 
   useEffect(() => {

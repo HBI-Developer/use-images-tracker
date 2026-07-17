@@ -1,6 +1,6 @@
 {
   "name": "use-images-tracker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React Hook to Check if images inside tracked element/component is loaded.",
   "homepage": "https://github.com/HBI-Developer/use-images-tracker",
   "main": "dist/index.js",

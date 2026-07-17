@@ -2,33 +2,36 @@ name: Publish Package to npm
 
 on:
   release:
-    types: [published] # سيعمل السكريبت تلقائياً بمجرد نشر Release جديد على جيتهاب
+    types: [published]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      # 1. جلب الكود من المستودع
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. إعداد بيئة Node.js
+      # 1. تثبيت pnpm أولاً (خطوة إجبارية)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9 # أو حدد الإصدار الذي تستخدمه محلياً
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # أو أي إصدار تعتمده لمشروعك
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm' # لتسريع العمليات مستقبلاً عبر كاش pnpm
 
-      # 3. تثبيت الاعتماديات (Dependencies)
+      # 2. التثبيت والنشر باستخدام pnpm
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
 
-      # 4. بناء المشروع (إذا كانت مكتبتك تحتاج إلى ترجمة أو Build مثل TypeScript)
-      - name: Build package
-        run: pnpm build
+      # - name: Build package
+      #   run: pnpm build
 
-      # 5. النشر إلى npm
       - name: Publish to npm
-        run: npm publish
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_IMAGES_TRACKER }}

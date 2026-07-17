@@ -165,10 +165,10 @@ The hook returns an object with four members:
 
 | Member       | Type                                                                 | Description |
 | ------------ | -------------------------------------------------------------------- | ----------- |
-| `tracker`    | `RefObject<HTMLElement>`                                             | Ref to attach to the container element that wraps your images. |
+| `tracker`    | `React.MutableRefObject<any>`                                        | Ref to attach to the container element that wraps your images. |
 | `isLoaded`   | `boolean`                                                            | `true` when every tracked image has finished (loaded or errored). `true` immediately if no images are found. |
 | `failures`   | `Array<{ code: number; image: HTMLImageElement; url: string }>`      | Accumulated failure records for images that errored during tracking. |
-| `repeating`  | `() => void`                                                         | Resets tracking state and re-scans the container. Use when images change dynamically. |
+| `repeating`  | `() => void`                                                         | Resets tracking state and re-scans the container. Clears `failures`, counter, and `isLoaded`. No-op on first render or before tracking starts. Use when images change dynamically. |
 
 ### Failure Object
 

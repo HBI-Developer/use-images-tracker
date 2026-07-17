@@ -21,7 +21,7 @@ export default function useImagesTracker() {
       }
 
       const increaseCounter = () => {
-        setCounter((prev) => prev + 1);
+        setCounter((prev: number) => prev + 1);
       };
 
       [].forEach.call(images.current, (image: HTMLImageElement) => {
@@ -41,7 +41,7 @@ export default function useImagesTracker() {
               error.code = 500;
             }
 
-            setFailures((prev) => [...prev, error]);
+            setFailures((prev: Array<{ code: number; image: HTMLImageElement; url: string }>) => [...prev, error]);
           });
         }
       });
@@ -50,6 +50,7 @@ export default function useImagesTracker() {
       if (!isStarted || isFirstTime.current) return;
       setCounter(0);
       setIsLoaded(false);
+      setFailures([]);
       setTimeout(() => {
         setIsStarted(false);
       }, 0);
